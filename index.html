@@ -3,475 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jukebox Star - Accesso con Sfida</title>
+    <title>Jukebox Star - Access Gateway</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --text: #f8fafc;
+            --danger: #f43f5e;
+            --success: #10b981;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0f19;
-            color: white;
+            background-color: var(--bg-color);
+            color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            text-align: center;
         }
+
         .container {
-            background: #23273a;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            max-width: 440px;
-            width: 90%;
-            border: 1px solid #3b4261;
-        }
-        h2 {
-            margin-top: 0;
-            color: #ff007f;
-            font-size: 22px;
-            letter-spacing: 1px;
-        }
-        #countdown-container {
-            font-size: 13px;
-            color: #ff9900;
-            font-weight: bold;
-            margin-bottom: 10px;
-            background: rgba(255,153,0,0.1);
-            padding: 7px;
-            border-radius: 6px;
-        }
-        #challenge-title {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #00ff66;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        button {
-            cursor: pointer;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        input {
-            background: #1a1d29;
-            color: white;
-            border: 1px solid #3b4261;
-            border-radius: 6px;
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
-            letter-spacing: 3px;
+            box-sizing: border-box;
         }
-        #success-screen {
-            display: none;
-            background: #23273a;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            max-width: 440px;
-            width: 90%;
-            border: 1px solid #00ff66;
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
         }
-        .success-btn {
-            background: #00ff66;
-            color: #12141c;
+
+        p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
             border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(0,255,102,0.4);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: opacity 0.2s;
         }
-        .success-btn:hover {
-            background: #00dd55;
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .game-box {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-screen {
+            text-align: center;
+        }
+
+        .success-screen a {
+            display: inline-block;
+            background-color: var(--success);
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 1rem;
+        }
+
+        .lockout-timer {
+            color: var(--danger);
+            font-weight: bold;
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- SCHERMATA DELLA SFIDA / BLOCCO -->
-    <div id="lock-screen" class="container">
-        <h2>⭐ ACCESSO JUKEBOX STAR ⭐</h2>
-        <div id="countdown-container">
-            Tempo di attesa: <span id="timer-seconds">120</span>s (Completa la sfida per sbloccare!)
-        </div>
+    <div class="container">
+        <!-- SEZIONE GATEWAY / MINIGIOCHI -->
+        <div id="gateway-section">
+            <h1>Jukebox Star</h1>
+            <p>Supera il minigioco o inserisci il PIN Admin per accedere</p>
 
-        <div id="challenge-title">Modalità Sfida</div>
-
-        <!-- 1. Puzzle Numerico -->
-        <div id="number-puzzle-container" style="display: none; flex-direction: column; align-items: center; margin-bottom: 12px;">
-            <div style="font-size: 12px; color: #b3b3b3; margin-bottom: 6px;">🧩 Clicca sui numeri adiacenti allo spazio vuoto (1-8)</div>
-            <div id="puzzle-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 180px; margin: 0 auto 10px auto;"></div>
-            <button id="shuffle-puzzle-btn" style="padding: 5px 10px; font-size: 11px; background: #2e344e; color: #fff; border: 1px solid #3b4261;">Mescola</button>
-        </div>
-
-        <!-- 2. Anagramma Vario -->
-        <div id="word-puzzle-container" style="display: none; flex-direction: column; align-items: center; margin-bottom: 12px;">
-            <div id="word-hint" style="font-size: 13px; color: #b3b3b3; margin-bottom: 6px; font-style: italic;">Indizio: ...</div>
-            <div id="word-slots" style="display: flex; gap: 4px; justify-content: center; margin-bottom: 10px; min-height: 36px; flex-wrap: wrap;"></div>
-            <div id="word-tiles" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 10px; max-width: 340px;"></div>
-            <div style="display: flex; gap: 6px;">
-                <button id="word-clear-btn" style="padding: 5px 10px; font-size: 11px; background: #2e344e; color: #fff; border: 1px solid #3b4261;">Cancella</button>
-                <button id="word-shuffle-btn" style="padding: 5px 10px; font-size: 11px; background: #2e344e; color: #fff; border: 1px solid #3b4261;">Mescola</button>
+            <div id="game-container" class="game-box">
+                <p id="game-instructions">Indovina il numero segreto (tra 1 e 10):</p>
+                <input type="number" id="user-input" placeholder="Tuo tentativo...">
+                <button onclick="checkGame()">Verifica</button>
+                <p id="game-feedback" style="margin-top: 0.5rem; font-size: 0.85rem;"></p>
             </div>
-        </div>
 
-        <!-- 3. Quiz Cultura Generale -->
-        <div id="culture-container" style="display: none; flex-direction: column; align-items: center; margin-bottom: 12px;">
-            <div id="cult-question" style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 10px; min-height: 35px;">Domanda...</div>
-            <div id="cult-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; margin-bottom: 8px;"></div>
-            <button id="cult-next-btn" style="padding: 5px 10px; font-size: 11px; background: #2e344e; color: #fff; border: 1px solid #3b4261; display: none;">Altra domanda</button>
-        </div>
-
-        <!-- 4. Minigioco Snake -->
-        <div id="snake-container" style="display: none; flex-direction: column; align-items: center; margin-bottom: 12px;">
-            <div style="font-size: 12px; color: #00ff66; margin-bottom: 4px;">🐍 Mangia <span id="snake-target-score">9</span> mele per sbloccare! (Punti: <span id="snake-score">0</span>)</div>
-            <canvas id="snake-canvas" width="200" height="200" style="background: #12141c; border: 2px solid #3b4261; border-radius: 6px; margin-bottom: 6px;"></canvas>
-            <div style="display: grid; grid-template-columns: repeat(3, 40px); gap: 4px; justify-content: center;">
-                <div></div><button id="snake-up" style="background:#2e344e;color:#fff;border:none;border-radius:4px;padding:6px;">⬆️</button><div></div>
-                <button id="snake-left" style="background:#2e344e;color:#fff;border:none;border-radius:4px;padding:6px;">⬅️</button>
-                <button id="snake-down" style="background:#2e344e;color:#fff;border:none;border-radius:4px;padding:6px;">⬇️</button>
-                <button id="snake-right" style="background:#2e344e;color:#fff;border:none;border-radius:4px;padding:6px;">➡️</button>
+            <div style="margin-top: 1.5rem; border-top: 1px solid #334155; padding-top: 1rem;">
+                <p style="font-size: 0.8rem; margin-bottom: 0.5rem;">Sei l'amministratore?</p>
+                <input type="password" id="admin-pin" placeholder="Inserisci PIN Admin">
+                <button onclick="checkAdminPin()" style="background: #334155; font-size: 0.9rem; padding: 0.5rem;">Sblocca con PIN</button>
             </div>
+
+            <div id="lockout-msg" class="lockout-timer hidden"></div>
         </div>
 
-        <div style="border-top: 1px solid #3b4261; padding-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-            <span style="font-size: 11px; color: #8288a3;">Codice Amministratore (Sblocco Totale):</span>
-            <div style="display: flex; gap: 6px; width: 100%; justify-content: center;">
-                <input type="password" id="admin-pin-input" placeholder="••••••" style="padding: 6px; font-size: 13px; width: 120px;" maxlength="6">
-                <button id="admin-pin-btn" style="padding: 6px 12px; font-size: 11px; background: #ff007f; color: white; border: none;">Sblocca</button>
-            </div>
-        </div>
-    </div>
+        <!-- SEZIONE SBLOCCATA (DOPO 3 CANZONI / ACCESSO) -->
+        <div id="unlocked-section" class="success-screen hidden">
+            <h1>Accesso Consentito! 🎉</h1>
+            <p>Hai sbloccato la sessione per scegliere le tue canzoni.</p>
+            
+            <a href="https://www.jukeboxstar.com" target="_blank">Vai al Jukebox Star</a>
 
-    <!-- SCHERMATA DI SUCCESSO (Sbloccato) -->
-    <div id="success-screen">
-        <h2 style="color: #00ff66; margin-top: 0;">🎉 SFIDA SUPERATA!</h2>
-        <p style="font-size: 14px; color: #b3b3b3; margin-bottom: 20px;">Il Jukebox è sbloccato. Clicca sul pulsante sottostante per accedere a Jukebox Star e mettere la tua canzone.</p>
-        <a href="https://www.jukeboxstar.com" target="_blank" class="success-btn">Vai a Jukebox Star 🎵</a>
+            <!-- Pulsante richiesto per riattivare il blocco -->
+            <button onclick="lockAgain()" style="background-color: var(--danger); margin-top: 1.5rem;">Termina & Torna al Blocco</button>
+        </div>
     </div>
 
     <script>
-        const CONFIG = {
-            ADMIN_PIN: "160379",
-            LOCKOUT_SECONDS: 120,
-        };
+        // Logica Minogioco (Numero Segreto casuale)
+        let secretNumber = Math.floor(Math.random() * 10) + 1;
+        let attempts = 0;
+        const maxAttempts = 3;
 
-        let countdownTimer = null;
-        let secondsLeft = CONFIG.LOCKOUT_SECONDS;
-        let activeChallengeType = 'number';
+        function checkGame() {
+            const inputVal = parseInt(document.getElementById('user-input').value);
+            const feedback = document.getElementById('game-feedback');
 
-        let usedQuestions = JSON.parse(localStorage.getItem('jukebox_used_questions') || '[]');
-        let usedWords = JSON.parse(localStorage.getItem('jukebox_used_words') || '[]');
+            if (isNaN(inputVal)) {
+                feedback.innerText = "Inserisci un numero valido!";
+                return;
+            }
 
-        let puzzleBoard = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+            attempts++;
 
-        const wordPool = [
-            { word: "PARIGI", hint: "Capitale della Francia" },
-            { word: "MADRID", hint: "Capitale della Spagna" },
-            { word: "LONDRA", hint: "Capitale del Regno Unito" },
-            { word: "ROMA", hint: "La Città Eterna d'Italia" },
-            { word: "VENEZIA", hint: "La città dei canali e delle gondole" },
-            { word: "GIAPPONE", hint: "Il Paese del Sol Levante" },
-            { word: "PIANETA", hint: "Corpo celeste che orbita attorno a una stella" },
-            { word: "VULCANO", hint: "Spaccatura della crosta terrestre con magma" },
-            { word: "GHEPARDO", hint: "L'animale terrestre più veloce" },
-            { word: "GALASSIA", hint: "Enorme sistema di stelle e gas" }
-        ];
-        let currentWordData = { word: "", hint: "" };
-        let scrambledLetters = [];
-        let selectedLettersState = [];
-
-        const culturePool = [
-            { q: "Quale nazione europea ha la forma di uno stivale?", correct: "Italia", options: ["Spagna", "Italia", "Grecia", "Francia"] },
-            { q: "Chi ha dipinto la celebre Gioconda?", correct: "Leonardo da Vinci", options: ["Michelangelo", "Raffaello", "Leonardo da Vinci", "Caravaggio"] },
-            { q: "In quale anno è avvenuto lo sbarco dell'uomo sulla Luna?", correct: "1969", options: ["1969", "1972", "1959", "1981"] },
-            { q: "Qual è il pianeta più grande del sistema solare?", correct: "Giove", options: ["Saturno", "Giove", "Marte", "Terra"] }
-        ];
-        let currentCultureQ = { q: "", correct: "", options: [] };
-
-        let snakeInterval = null;
-        let snake = [{x: 5, y: 5}];
-        let food = {x: 10, y: 10};
-        let dx = 1;
-        let dy = 0;
-        let snakeScore = 0;
-        const targetSnakeScore = 9;
-
-        function stopSnakeGame() {
-            if (snakeInterval) { clearInterval(snakeInterval); snakeInterval = null; }
-        }
-
-        // Funzione unificata che gestisce il completamento di una sfida
-        function handleChallengeComplete(gameName) {
-            if (secondsLeft > 0) {
-                alert(`${gameName} completato! 🎯 Però mancano ancora ${secondsLeft} secondi di attesa. Passiamo al prossimo gioco!`);
-                switchChallengeView();
+            if (inputVal === secretNumber) {
+                unlockJukebox();
+            } else if (attempts >= maxAttempts) {
+                triggerLockout();
             } else {
-                alert(`${gameName} completato con successo! Sblocco in corso...`);
-                unlockSystem();
+                if (inputVal < secretNumber) {
+                    feedback.innerText = `Tentativo ${attempts}/${maxAttempts}: Troppo basso!`;
+                } else {
+                    feedback.innerText = `Tentativo ${attempts}/${maxAttempts}: Troppo alto!`;
+                }
             }
         }
 
-        function unlockSystem() {
-            stopSnakeGame();
-            if (countdownTimer) clearInterval(countdownTimer);
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'block';
-        }
-
-        function checkPin() {
-            const pinInput = document.getElementById('admin-pin-input');
-            if (pinInput && pinInput.value === CONFIG.ADMIN_PIN) {
-                unlockSystem();
+        // Controllo PIN Admin (160379)
+        function checkAdminPin() {
+            const pin = document.getElementById('admin-pin').value;
+            if (pin === "160379") {
+                unlockJukebox();
             } else {
-                alert("Codice PIN errato!");
-                pinInput.value = "";
-                pinInput.focus();
+                alert("PIN non corretto!");
             }
         }
 
-        function startCountdown() {
-            secondsLeft = CONFIG.LOCKOUT_SECONDS;
-            const timerEl = document.getElementById('timer-seconds');
-            if (timerEl) timerEl.innerText = secondsLeft;
+        // Sblocca l'interfaccia
+        function unlockJukebox() {
+            document.getElementById('gateway-section').classList.add('hidden');
+            document.getElementById('unlocked-section').classList.remove('hidden');
+        }
 
-            if (countdownTimer) clearInterval(countdownTimer);
+        // Funzione per riattivare il blocco e resettare il minigioco (Torna al game)
+        function lockAgain() {
+            // Pulisce i campi
+            document.getElementById('user-input').value = "";
+            document.getElementById('admin-pin').value = "";
+            document.getElementById('game-feedback').innerText = "";
+            
+            // Genera un nuovo numero segreto per il prossimo utente
+            secretNumber = Math.floor(Math.random() * 10) + 1;
+            attempts = 0;
 
-            countdownTimer = setInterval(() => {
-                secondsLeft--;
-                if (timerEl) timerEl.innerText = secondsLeft;
+            // Torna alla schermata del gateway
+            document.getElementById('unlocked-section').classList.add('hidden');
+            document.getElementById('gateway-section').classList.remove('hidden');
+        }
 
-                if (secondsLeft <= 0) {
-                    clearInterval(countdownTimer);
-                    const containerEl = document.getElementById('countdown-container');
-                    if (containerEl) {
-                        containerEl.style.background = 'rgba(0,255,0,0.15)';
-                        containerEl.style.color = '#00ff66';
-                        containerEl.innerHTML = '✨ <strong>Tempo scaduto!</strong> Completa la sfida per sbloccare!';
-                    }
+        // Gestione Timer di Lockout (120 secondi in caso di errore)
+        function triggerLockout() {
+            const gameBox = document.getElementById('game-container');
+            const lockoutMsg = document.getElementById('lockout-msg');
+            gameBox.classList.add('hidden');
+            lockoutMsg.classList.remove('hidden');
+
+            let timeLeft = 120; // 120 secondi
+            lockoutMsg.innerText = `Troppi tentativi falliti. Riprova tra ${timeLeft}s`;
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                lockoutMsg.innerText = `Troppi tentativi falliti. Riprova tra ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    attempts = 0;
+                    secretNumber = Math.floor(Math.random() * 10) + 1;
+                    lockoutMsg.classList.add('hidden');
+                    gameBox.classList.remove('hidden');
+                    document.getElementById('game-feedback').innerText = "";
                 }
             }, 1000);
         }
-
-        // 1. Puzzle Numerico
-        function shuffleNumberPuzzle() {
-            for (let i = 0; i < 100; i++) {
-                const emptyIdx = puzzleBoard.indexOf("");
-                const validMoves = [];
-                const row = Math.floor(emptyIdx / 3);
-                const col = emptyIdx % 3;
-                if (row > 0) validMoves.push(emptyIdx - 3);
-                if (row < 2) validMoves.push(emptyIdx + 3);
-                if (col > 0) validMoves.push(emptyIdx - 1);
-                if (col < 2) validMoves.push(emptyIdx + 1);
-                const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
-                puzzleBoard[emptyIdx] = puzzleBoard[randomMove];
-                puzzleBoard[randomMove] = "";
-            }
-            if (checkNumberWin()) shuffleNumberPuzzle();
-            else renderNumberPuzzle();
-        }
-
-        function renderNumberPuzzle() {
-            const grid = document.getElementById('puzzle-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            puzzleBoard.forEach((val, index) => {
-                const tile = document.createElement('div');
-                tile.style.cssText = `height: 44px; background: ${val === "" ? "transparent" : "#2e344e"}; color: white; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: ${val === "" ? "default" : "pointer"}; user-select: none; border: ${val === "" ? "none" : "1px solid #3b4261"};`;
-                tile.innerText = val;
-                if (val !== "") tile.onclick = () => moveNumberTile(index);
-                grid.appendChild(tile);
-            });
-        }
-
-        function moveNumberTile(index) {
-            const emptyIdx = puzzleBoard.indexOf("");
-            const row = Math.floor(index / 3);
-            const col = index % 3;
-            const emptyRow = Math.floor(emptyIdx / 3);
-            const emptyCol = emptyIdx % 3;
-            if ((Math.abs(row - emptyRow) + Math.abs(col - emptyCol)) === 1) {
-                puzzleBoard[emptyIdx] = puzzleBoard[index];
-                puzzleBoard[index] = "";
-                renderNumberPuzzle();
-                if (checkNumberWin()) {
-                    handleChallengeComplete("Puzzle Numerico");
-                }
-            }
-        }
-
-        function checkNumberWin() {
-            return puzzleBoard.every((val, idx) => val === ([1, 2, 3, 4, 5, 6, 7, 8, ""][idx]));
-        }
-
-        // 2. Anagramma
-        function initWordPuzzle() {
-            let availableWords = wordPool.filter(w => !usedWords.includes(w.word));
-            if (availableWords.length === 0) { usedWords = []; availableWords = wordPool; }
-            currentWordData = availableWords[Math.floor(Math.random() * availableWords.length)];
-            usedWords.push(currentWordData.word);
-            localStorage.setItem('jukebox_used_words', JSON.stringify(usedWords));
-
-            const letters = currentWordData.word.split('');
-            do { scrambledLetters = [...letters].sort(() => Math.random() - 0.5); } while (scrambledLetters.join('') === currentWordData.word && letters.length > 1);
-            selectedLettersState = new Array(letters.length).fill(null);
-            renderWordPuzzle();
-        }
-
-        function renderWordPuzzle() {
-            document.getElementById('word-hint').innerText = `Indizio: ${currentWordData.hint}`;
-            const slotsEl = document.getElementById('word-slots');
-            const tilesEl = document.getElementById('word-tiles');
-            slotsEl.innerHTML = ''; tilesEl.innerHTML = '';
-
-            selectedLettersState.forEach((item, idx) => {
-                const slot = document.createElement('div');
-                slot.style.cssText = `width: 30px; height: 34px; background: #1a1d29; border: 2px dashed #3b4261; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: bold; color: #00ff66; cursor: pointer;`;
-                slot.innerText = item ? item.letter : '';
-                if (item) slot.onclick = () => { scrambledLetters[item.origIndex].used = false; selectedLettersState[idx] = null; renderWordPuzzle(); };
-                slotsEl.appendChild(slot);
-            });
-
-            scrambledLetters.forEach((item, origIdx) => {
-                const letterObj = typeof item === 'string' ? { letter: item, used: false } : item;
-                scrambledLetters[origIdx] = letterObj;
-                const tile = document.createElement('button');
-                tile.innerText = letterObj.letter;
-                tile.style.cssText = `width: 30px; height: 34px; background: ${letterObj.used ? '#1a1d29' : '#2e344e'}; color: ${letterObj.used ? '#4a5270' : '#fff'}; border: 1px solid #3b4261; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: ${letterObj.used ? 'default' : 'pointer'};`;
-                if (!letterObj.used) {
-                    tile.onclick = () => {
-                        const firstEmptyIdx = selectedLettersState.indexOf(null);
-                        if (firstEmptyIdx !== -1) {
-                            selectedLettersState[firstEmptyIdx] = { letter: letterObj.letter, origIndex: origIdx };
-                            letterObj.used = true;
-                            renderWordPuzzle();
-                            if (!selectedLettersState.includes(null) && selectedLettersState.map(x => x.letter).join('') === currentWordData.word) {
-                                handleChallengeComplete("Anagramma");
-                            }
-                        }
-                    };
-                }
-                tilesEl.appendChild(tile);
-            });
-        }
-
-        // 3. Quiz Cultura
-        function initCultureQuiz() {
-            let availableQuestions = culturePool.filter(q => !usedQuestions.includes(q.q));
-            if (availableQuestions.length === 0) { usedQuestions = []; availableQuestions = culturePool; }
-            currentCultureQ = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
-            usedQuestions.push(currentCultureQ.q);
-            localStorage.setItem('jukebox_used_questions', JSON.stringify(usedQuestions));
-
-            currentCultureQ.shuffledOptions = [...currentCultureQ.options].sort(() => Math.random() - 0.5);
-            renderCultureQuiz();
-        }
-
-        function renderCultureQuiz() {
-            document.getElementById('cult-question').innerText = currentCultureQ.q;
-            const optsContainer = document.getElementById('cult-options');
-            optsContainer.innerHTML = '';
-            currentCultureQ.shuffledOptions.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.innerText = opt;
-                btn.style.cssText = `padding: 8px; font-size: 12px; background: #2e344e; color: white; border: 1px solid #3b4261; border-radius: 6px; cursor: pointer;`;
-                btn.onclick = () => {
-                    if (opt === currentCultureQ.correct) {
-                        handleChallengeComplete("Quiz Cultura");
-                    } else {
-                        alert("Risposta errata! Riprova.");
-                        initCultureQuiz();
-                    }
-                };
-                optsContainer.appendChild(btn);
-            });
-        }
-
-        // 4. Snake
-        function initSnakeGame() {
-            stopSnakeGame();
-            snake = [{x: 5, y: 5}];
-            food = {x: 10, y: 10};
-            dx = 1; dy = 0; snakeScore = 0;
-            document.getElementById('snake-score').innerText = snakeScore;
-            snakeInterval = setInterval(updateSnake, 130);
-        }
-
-        function updateSnake() {
-            const canvas = document.getElementById('snake-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-            if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.some(p => p.x === head.x && p.y === head.y)) {
-                initSnakeGame(); return;
-            }
-            snake.unshift(head);
-            if (head.x === food.x && head.y === food.y) {
-                snakeScore++;
-                document.getElementById('snake-score').innerText = snakeScore;
-                if (snakeScore >= targetSnakeScore) {
-                    stopSnakeGame();
-                    handleChallengeComplete("Snake");
-                    return;
-                }
-                food = {x: Math.floor(Math.random() * 18) + 1, y: Math.floor(Math.random() * 18) + 1};
-            } else {
-                snake.pop();
-            }
-            ctx.fillStyle = '#12141c'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ff007f'; ctx.fillRect(food.x * 10, food.y * 10, 9, 9);
-            ctx.fillStyle = '#00ff66'; snake.forEach(p => ctx.fillRect(p.x * 10, p.y * 10, 9, 9));
-        }
-
-        function switchChallengeView() {
-            stopSnakeGame();
-            const types = ['number', 'word', 'culture', 'snake'];
-            const availableTypes = types.filter(t => t !== activeChallengeType);
-            activeChallengeType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-
-            document.getElementById('number-puzzle-container').style.display = 'none';
-            document.getElementById('word-puzzle-container').style.display = 'none';
-            document.getElementById('culture-container').style.display = 'none';
-            document.getElementById('snake-container').style.display = 'none';
-
-            if (activeChallengeType === 'number') {
-                document.getElementById('number-puzzle-container').style.display = 'flex';
-                document.getElementById('challenge-title').innerText = "🧩 Riordina i Numeri";
-                shuffleNumberPuzzle();
-            } else if (activeChallengeType === 'word') {
-                document.getElementById('word-puzzle-container').style.display = 'flex';
-                document.getElementById('challenge-title').innerText = "🔤 Anagramma";
-                initWordPuzzle();
-            } else if (activeChallengeType === 'culture') {
-                document.getElementById('culture-container').style.display = 'flex';
-                document.getElementById('challenge-title').innerText = "💡 Quiz Cultura";
-                initCultureQuiz();
-            } else {
-                document.getElementById('snake-container').style.display = 'flex';
-                document.getElementById('challenge-title').innerText = "🐍 Gioco Snake";
-                initSnakeGame();
-            }
-        }
-
-        // Assegnazione eventi
-        document.getElementById('admin-pin-btn').onclick = checkPin;
-        document.getElementById('shuffle-puzzle-btn').onclick = shuffleNumberPuzzle;
-        document.getElementById('word-shuffle-btn').onclick = initWordPuzzle;
-        document.getElementById('word-clear-btn').onclick = () => { selectedLettersState.fill(null); scrambledLetters.forEach(i => {if(typeof i==='object')i.used=false;}); renderWordPuzzle(); };
-        document.getElementById('snake-up').onclick = () => { if(dy===0){dx=0;dy=-1;} };
-        document.getElementById('snake-down').onclick = () => { if(dy===0){dx=0;dy=1;} };
-        document.getElementById('snake-left').onclick = () => { if(dx===0){dx=-1;dy=0;} };
-        document.getElementById('snake-right').onclick = () => { if(dx===0){dx=1;dy=0;} };
-
-        // Avvio iniziale
-        startCountdown();
-        switchChallengeView();
     </script>
 </body>
 </html>
